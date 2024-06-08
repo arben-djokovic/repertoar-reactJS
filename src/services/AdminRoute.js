@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "./AuthService";
 import { toast } from "react-toastify";
 
-export const PrivateRoute = ({ children }) => {
+export const AdminRoute = ({ children }) => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    if (!auth.getAuthStatus()) {
-      toast.error("Neautorizovanim korisisnicima nije dozvoljen pristup");
-      navigate("/log-in");
+    if (!auth.getAuthAdminStatus()) {
+      toast.error("nisi admin");
+      navigate("/");
     }
   }, []);
   return children;

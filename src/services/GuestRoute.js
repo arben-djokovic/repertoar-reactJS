@@ -1,20 +1,16 @@
-import React from "react";
-import { Route, Redirect} from 'react-router-dom';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { auth } from "./AuthService";
+import { toast } from "react-toastify";
 
+export const GuestRoute = ({ children }) => {
+  let navigate = useNavigate();
 
-export const GuestRoute = ({ children, ...rest }) => {
-  let isAuthenticated = auth.getAuthStatus();
-  return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        isAuthenticated ? (
-          <Redirect to="/" replace />
-        ) : (
-          children
-        )
-      }
-    />
-  );
+  useEffect(() => {
+    if (auth.getAuthStatus()) {
+      toast.error("Vec ste prijavljeni");
+      navigate("/");
+    }
+  }, []);
+  return children;
 };
