@@ -12,6 +12,8 @@ import AddSong from './pages/AddSong';
 import Header from './components/Header/Header';
 import "./App.scss"
 import Singup from './pages/Singup/Singup';
+import Playlists from './pages/Playlists/Playlists';
+import MyPlaylists from './pages/MyPlaylists/MyPlaylists';
 
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/playlists' element={<Playlists />} />
+        <Route path='/my-playlists' element={<PrivateRoute><MyPlaylists /></PrivateRoute>} />
         <Route path='/log-in' element={<GuestRoute><Login /></GuestRoute>} />
         <Route path='/sing-up' element={<GuestRoute><Singup /></GuestRoute>} />
         <Route path='/admin' element={<AdminRoute><Admin /></AdminRoute>} />
