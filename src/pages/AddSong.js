@@ -16,7 +16,7 @@ export default function AddSong() {
         getArtists()
     },[])
   return (
-    <div>
+    <div className='addSong'>
         <select name="artist" id="artist">
             {artists.map(artist => {
                 return(<option value={artist._id}>{artist.name}</option>)

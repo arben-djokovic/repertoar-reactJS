@@ -4,13 +4,13 @@ import { auth } from "./AuthService";
 import { toast } from "react-toastify";
 
 export const GuestRoute = ({ children }) => {
-  let navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     if (auth.getAuthStatus()) {
       toast.error("Vec ste prijavljeni");
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
   return children;
 };

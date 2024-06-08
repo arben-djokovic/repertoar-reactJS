@@ -12,8 +12,12 @@ class AuthService {
   getAuthAdminStatus = () => {
     let token = localStorage.getItem("token");
     if (!!token) {this.setJWT(token)}else{return false};
-    const decodedToken = jwtDecode(token);
-    return decodedToken.isAdmin;
+    try{
+      const decodedToken = jwtDecode(token);
+      return decodedToken.isAdmin;
+    }catch(err){
+      return false
+    }
   };
 
   setJWT = (token) =>

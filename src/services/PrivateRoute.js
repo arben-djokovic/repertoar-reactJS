@@ -4,13 +4,13 @@ import { auth } from "./AuthService";
 import { toast } from "react-toastify";
 
 export const PrivateRoute = ({ children }) => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!auth.getAuthStatus()) {
       toast.error("Neautorizovanim korisisnicima nije dozvoljen pristup");
       navigate("/log-in");
     }
-  }, []);
+  }, [navigate]);
   return children;
 };

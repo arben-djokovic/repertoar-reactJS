@@ -1,0 +1,21 @@
+.header{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(54, 54, 54);
+    padding: 10px 0;
+    color: white;
+    position: sticky;
+    height: 40px;   
+    h1{
+        // width: 20vw;
+    }
+    .nav{
+        display: flex;
+        grid-gap: 2vw;
+        align-items: center;
+        a{
+            color: white;
+        }
+    }
+}
