@@ -9,7 +9,7 @@ import { AdminRoute } from './services/AdminRoute';
 import { PrivateRoute } from './services/PrivateRoute';
 import { GuestRoute } from './services/GuestRoute';
 import AddSong from './pages/AddSong';
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import "./App.scss"
 import Singup from './pages/Singup/Singup';
 

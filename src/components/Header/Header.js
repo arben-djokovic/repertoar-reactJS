@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import "./Style.scss"
-import { auth } from '../services/AuthService'
+import { auth } from '../../services/AuthService'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 export default function Header() {
@@ -20,7 +20,7 @@ export default function Header() {
   return (<header className='header'>
     <a href="/"><h1>Repertoar</h1></a>
     <nav className='nav'> 
-      <a href="/">Songs</a>
+      <a href="/">Home</a>
       {isAdmin && <a href="/admin">Admin</a>}
       {isLogged && <a href="/me">Profile</a>}
       {!isLogged && <a href="/log-in"><button>Log in</button></a>}

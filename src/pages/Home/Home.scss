@@ -1,6 +1,33 @@
 .home{
+    display: flex;
+    flex-direction: row;
+    .page{
+        margin-left: 140px;
+        padding: 50px;
+        width: 100%;
+        ul{
+            list-style: none;
+            width: 100%;
+            margin-top: 20px;
+            li{
+                background-color: whitesmoke;
+                width: 100%;
+                padding: 20px;
+                border-bottom: 2px solid rgb(0, 145, 255);
+                &:hover{
+                    cursor: pointer;
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
     form{
         display: flex;
+        grid-gap: 10px;
         align-items: center;
+    }
+    .notFound{
+        margin-top: 50px;
+        font-size: 20px;
     }
 }
