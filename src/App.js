@@ -4,13 +4,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Login/Login';
 import Admin from './pages/Admin';
 import User from './pages/User';
-import Home from './pages/Home';
+import Home from './pages/Home/Home';
 import { AdminRoute } from './services/AdminRoute';
 import { PrivateRoute } from './services/PrivateRoute';
 import { GuestRoute } from './services/GuestRoute';
 import AddSong from './pages/AddSong';
 import Header from './components/Header';
 import "./App.scss"
+import Singup from './pages/Singup/Singup';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/log-in' element={<GuestRoute><Login /></GuestRoute>} />
+        <Route path='/sing-up' element={<GuestRoute><Singup /></GuestRoute>} />
         <Route path='/admin' element={<AdminRoute><Admin /></AdminRoute>} />
         <Route path='/me' element={<PrivateRoute><User /></PrivateRoute>} />
         <Route path='/add-song' element={<AdminRoute><AddSong /></AdminRoute>} />

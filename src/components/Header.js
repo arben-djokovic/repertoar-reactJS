@@ -20,9 +20,9 @@ export default function Header() {
   return (<header className='header'>
     <a href="/"><h1>Repertoar</h1></a>
     <nav className='nav'> 
+      <a href="/">Songs</a>
       {isAdmin && <a href="/admin">Admin</a>}
-      {isAdmin && <a href="/add-song">Add Song</a>}
-      {isLogged && <a href="/me">My Profile</a>}
+      {isLogged && <a href="/me">Profile</a>}
       {!isLogged && <a href="/log-in"><button>Log in</button></a>}
       {isLogged && <button onClick={()=>{localStorage.clear(); navigate("/")}}>Log out</button>}
     </nav>
