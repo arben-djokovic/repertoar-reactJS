@@ -6,7 +6,7 @@
     padding: 10px 0;
     color: white;
     position: sticky;
-    height: 40px;   
+    height: 60px;   
     top: 0;
     .nav{
         display: flex;
@@ -24,6 +24,7 @@
 
 @media screen and (max-width: 500px) {
     .header{
+        z-index: 2;
         .visible{
             display: flex !important;
         }
