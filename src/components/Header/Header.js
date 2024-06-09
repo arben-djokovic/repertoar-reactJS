@@ -14,12 +14,18 @@ export default function Header() {
     setIsLogged(auth.getAuthStatus()) 
   }
   useEffect(()=>{
+    document.querySelector(".nav").classList.remove("visible");
     getAuth()
   },[location])
+  const tooggleNav = () => {
+    document.querySelector(".nav").classList.toggle("visible");
+  }
 
   return (<header className='header'>
     <a href="/"><h1>Repertoar</h1></a>
+    <i onClick={tooggleNav} className="fa fa-bars" aria-hidden="true"></i>
     <nav className='nav'> 
+    <i  onClick={tooggleNav} className="fa fa-times" aria-hidden="true"></i>
       <a href="/">Home</a>
       {isAdmin && <a href="/admin">Admin</a>}
       {isLogged && <a href="/me">Profile</a>}

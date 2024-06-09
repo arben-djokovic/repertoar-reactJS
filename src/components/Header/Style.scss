@@ -7,6 +7,7 @@
     color: white;
     position: sticky;
     height: 40px;   
+    top: 0;
     .nav{
         display: flex;
         grid-gap: 2vw;
@@ -15,4 +16,34 @@
             color: white;
         }
     }
+    .fa-bars, .fa-times{
+        display: none;
+        cursor: pointer;
+    }
 }
+
+@media screen and (max-width: 500px) {
+    .header{
+        .visible{
+            display: flex !important;
+        }
+        .nav{
+            display: none;
+            padding: 0;
+            position: fixed;
+            height: 100vh;
+            width: 100vw;
+            top: 0;
+            left: 0;
+            background-color: rgb(2, 2, 2);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            grid-gap: 5vh;
+            z-index: 24;
+        }
+        .fa-bars, .fa-times{
+            display: block;
+        }
+    }
+  }

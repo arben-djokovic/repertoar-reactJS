@@ -4,9 +4,28 @@
     border-right: 2px solid black;
     height: calc(100vh - 100px);
     position: fixed;
+    z-index: -1;
     ul{
         li{
             margin: 10px 0;
+        }
+    }
+}
+@media screen and (max-width: 500px) {
+    .homeNav{
+        width: 100%;
+        height: unset;
+        position: static;
+        margin-bottom: 20px;
+        position: sticky;
+        top: 60px;
+        padding: 0;
+        background-color: whitesmoke;
+        z-index: 2;
+        ul{
+            display: flex;
+            list-style: none;
+            justify-content: space-around;
         }
     }
 }
