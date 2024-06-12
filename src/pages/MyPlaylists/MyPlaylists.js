@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import api from '../../api/apiCalls'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import HomeNav from '../../components/home-nav/HomeNav';
 import '../Home/Home.scss'
 
 export default function MyPlaylists() {
+    const navigate = useNavigate()
     let [playlists, setPlaylists] = useState([])
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -34,7 +35,8 @@ export default function MyPlaylists() {
                 <input type="text" name='search' defaultValue={search} placeholder='example: Rok' />
                 <button>Search</button>
                 <a href="/playlists">Reset</a>
-            </form>
+            </form><br />
+            <button onClick={()=>{navigate('/create-playlist')}}>+ CREATE PLAYLIST</button>
 
             {playlists.length ? <ul>
                 {playlists.map(playlist => {
