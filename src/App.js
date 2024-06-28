@@ -8,7 +8,7 @@ import Home from './pages/Home/Home';
 import { AdminRoute } from './services/AdminRoute';
 import { PrivateRoute } from './services/PrivateRoute';
 import { GuestRoute } from './services/GuestRoute';
-import AddSong from './pages/AddSong/AddSong';
+import AddSong from './pages/AddSong';
 import Header from './components/Header/Header';
 import "./App.scss"
 import Singup from './pages/Singup/Singup';
@@ -16,6 +16,7 @@ import Playlists from './pages/Playlists/Playlists';
 import MyPlaylists from './pages/MyPlaylists/MyPlaylists';
 import CreatePlaylist from './pages/CreatePlaylist/CreatePlaylist';
 import Playlist from './pages/Playlist/Playlist';
+import AddArtist from './pages/AddArtist';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path='/admin' element={<AdminRoute><Admin /></AdminRoute>} />
         <Route path='/me' element={<PrivateRoute><User /></PrivateRoute>} />
         <Route path='/add-song' element={<AdminRoute><AddSong /></AdminRoute>} />
+        <Route path='/add-artist' element={<AdminRoute><AddArtist /></AdminRoute>} />
       </Routes>
       <ToastContainer />
     </div>

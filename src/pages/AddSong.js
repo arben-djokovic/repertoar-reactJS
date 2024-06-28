@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import api from '../../api/apiCalls'
-import '../CreatePlaylist/CreatePlaylist.scss'
+import api from '../api/apiCalls'
+import './CreatePlaylist/CreatePlaylist.scss'
 import { toast } from 'react-toastify'
 
 export default function AddSong() {
