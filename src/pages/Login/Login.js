@@ -14,7 +14,7 @@ export default function Login() {
     let username = e.target.username.value
     let password = e.target.password.value 
       try{
-        const response = await api.post("/user/login", {
+        const response = await api.post("/users/login", {
           username: username,
           password: password
         })

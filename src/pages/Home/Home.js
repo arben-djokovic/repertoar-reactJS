@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import api from '../../api/apiCalls'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import HomeNav from '../../components/home-nav/HomeNav';
 import './Home.scss'
+import SongItem from '../../components/song-item/SongItem';
+import { auth } from '../../services/AuthService';
 
 export default function Home() {
     let [songs, setSongs] = useState([])
     let [genres, setGenres] = useState([])
     const location = useLocation();
+    const navigate = useNavigate()
     const queryParams = new URLSearchParams(location.search);
     const search = queryParams.get('search');
     const genre = queryParams.get('genre');
+    let isAdmin = auth.getAuthAdminStatus()
 
     const getSongs = async() => {
-        let apiCall = '/song/'
+        let apiCall = '/songs/'
         let added = false;
         if(search && search.length > 0){
             added = true
@@ -37,7 +41,7 @@ export default function Home() {
 
     const getGenres = async() => {
         try{
-            const response =  await api.get('/genre/')
+            const response =  await api.get('/genres/')
             console.log(response)
             setGenres(response.data)
         }catch(err){
@@ -67,14 +71,15 @@ export default function Home() {
                 </select>
                 <button>Search</button>
                 <a href="/">Reset</a>
+                {
+                    isAdmin && <button onClick={(e)=>{e.preventDefault(); navigate("/add-song")}}>+ ADD NEW SONG</button>
+                }
             </form>
 
             {songs.length ? <ul>
                 {songs.map(song => {
-                    return(<li><a href={"/songs/"+song._id}>
-                        <h3>{song.title}</h3>
-                        <p>{song.artist.name ? song.artist.name : "Nepoznato"}</p>
-                    </a></li>)
+                    return(
+                    <SongItem key={song._id} song={song} />)
                 })}
             </ul> : <p className='notFound'>Nije pronadjena nijedna pijesma</p>}
         </section>

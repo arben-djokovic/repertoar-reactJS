@@ -11,7 +11,7 @@ export default function Playlists() {
     const search = queryParams.get('search');
 
     const getPlaylists = async() => {
-        let apiCall = '/playlist/'
+        let apiCall = '/playlists/'
         if(search && search.length > 0){
             apiCall += "?search="+search
         }

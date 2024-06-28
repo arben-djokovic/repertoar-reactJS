@@ -12,7 +12,7 @@ export default function MyPlaylists() {
     const search = queryParams.get('search');
 
     const getPlaylists = async() => {
-        let apiCall = '/playlist/get-mine'
+        let apiCall = '/playlists/get-mine'
         if(search && search.length > 0){
             apiCall += "?search="+search
         }

@@ -13,7 +13,7 @@ export default function Singup() {
     let username = e.target.username.value
     let password = e.target.password.value 
       try{
-        const response = await api.post("/user/singup", {
+        const response = await api.post("/users/singup", {
           username: username,
           password: password
         })

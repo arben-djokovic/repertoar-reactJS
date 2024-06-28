@@ -12,7 +12,7 @@ export default function CreatePlaylist() {
             return;
         }
         try{
-            const respone = await api.post("/playlist/create", {
+            const respone = await api.post("/playlists/create", {
                name: playlistName 
             })
             if(respone.data.acknowledged == true){

@@ -1,0 +1,17 @@
+.song-item{
+    background-color: whitesmoke;
+    width: 100%;
+    padding: 20px;
+    border-bottom: 2px solid rgb(0, 145, 255);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 !important;
+    &:hover{
+        cursor: pointer;
+        opacity: 0.8;
+    }
+    a{
+        text-decoration: none;
+    }
+}

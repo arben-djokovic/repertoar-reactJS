@@ -8,13 +8,14 @@ import Home from './pages/Home/Home';
 import { AdminRoute } from './services/AdminRoute';
 import { PrivateRoute } from './services/PrivateRoute';
 import { GuestRoute } from './services/GuestRoute';
-import AddSong from './pages/AddSong';
+import AddSong from './pages/AddSong/AddSong';
 import Header from './components/Header/Header';
 import "./App.scss"
 import Singup from './pages/Singup/Singup';
 import Playlists from './pages/Playlists/Playlists';
 import MyPlaylists from './pages/MyPlaylists/MyPlaylists';
 import CreatePlaylist from './pages/CreatePlaylist/CreatePlaylist';
+import Playlist from './pages/Playlist/Playlist';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/playlists' element={<Playlists />} />
+        <Route path='/playlists/:id' element={<Playlist />} />
         <Route path='/my-playlists' element={<PrivateRoute><MyPlaylists /></PrivateRoute>} />
         <Route path='/create-playlist' element={<PrivateRoute><CreatePlaylist /></PrivateRoute>} />
         <Route path='/log-in' element={<GuestRoute><Login /></GuestRoute>} />
