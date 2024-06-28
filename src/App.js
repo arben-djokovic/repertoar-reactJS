@@ -17,6 +17,7 @@ import MyPlaylists from './pages/MyPlaylists/MyPlaylists';
 import CreatePlaylist from './pages/CreatePlaylist/CreatePlaylist';
 import Playlist from './pages/Playlist/Playlist';
 import AddArtist from './pages/AddArtist';
+import AddGenre from './pages/AddGenre';
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route path='/me' element={<PrivateRoute><User /></PrivateRoute>} />
         <Route path='/add-song' element={<AdminRoute><AddSong /></AdminRoute>} />
         <Route path='/add-artist' element={<AdminRoute><AddArtist /></AdminRoute>} />
+        <Route path='/add-genre' element={<AdminRoute><AddGenre /></AdminRoute>} />
       </Routes>
       <ToastContainer />
     </div>
