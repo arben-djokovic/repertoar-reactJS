@@ -1,0 +1,38 @@
+.dropdown{
+    position: relative;
+    i{
+        width: 40px;
+        text-align: center;
+        font-size: 1.5rem;
+        z-index: 0;
+    }
+    .back{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        padding: 0;
+        background-color: rgba(1, 1, 1, 0.632);
+        z-index: 2;
+    }
+    .dropdown-ul{
+        position: absolute;
+        background-color: white;
+        padding: 10px;
+        width: 150px;
+        right: 0;
+        list-style: none;
+        z-index: 3;
+        border: 1px solid black;
+        border-radius: 5px;
+        li{
+            border-bottom: 1px solid black;
+            padding: 5px 0;
+            &:hover{
+                cursor: pointer;
+                opacity: 0.8;
+            }
+        }
+    }
+}

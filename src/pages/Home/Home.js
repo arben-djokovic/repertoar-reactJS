@@ -63,9 +63,9 @@ export default function Home() {
                     <option value="0">All</option>
                     {genres && genres.map(genreEl => {
                         if(String(genreEl._id) == genre){
-                            return <option selected value={genreEl._id}>{genreEl.name}</option>
+                            return <option key={genreEl._id} selected value={genreEl._id}>{genreEl.name}</option>
                         }else{
-                            return <option value={genreEl._id}>{genreEl.name}</option>
+                            return <option key={genreEl._id} value={genreEl._id}>{genreEl.name}</option>
                         }
                     })}
                 </select>
@@ -76,10 +76,10 @@ export default function Home() {
                 }
             </form>
 
-            {songs.length ? <ul>
+            {songs.length ? <ul className='songs'>
                 {songs.map(song => {
                     return(
-                    <SongItem key={song._id} song={song} />)
+                    <SongItem key={song._id} song={song} isAdmin={isAdmin} />)
                 })}
             </ul> : <p className='notFound'>Nije pronadjena nijedna pijesma</p>}
         </section>
