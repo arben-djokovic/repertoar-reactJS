@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import api from '../api/apiCalls'
 import './CreatePlaylist/CreatePlaylist.scss'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 export default function AddSong() {
     const [artists, setArtists] = useState([])
@@ -10,6 +11,7 @@ export default function AddSong() {
     const songNameRef = useRef()
     const artistRef = useRef()
     const genreRef = useRef()
+    const navigate = useNavigate()
 
     const getArtists = async() => {
         try{
@@ -48,6 +50,7 @@ export default function AddSong() {
             })
             console.log(result)
             toast.success("Pjesma uspjesno dodana")
+            navigate("/songs/"+result.data.insertedId)
         }catch(err) {
             console.log(err)
             toast.error("Neuspjesno dodavanje pjesme")

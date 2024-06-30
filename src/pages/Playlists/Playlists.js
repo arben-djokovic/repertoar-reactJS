@@ -3,6 +3,7 @@ import api from '../../api/apiCalls'
 import { useLocation } from 'react-router-dom';
 import HomeNav from '../../components/home-nav/HomeNav';
 import '../Home/Home.scss'
+import PlaylistItem from '../../components/playlist-item/PlaylistItem';
 
 export default function Playlists() {
     let [playlists, setPlaylists] = useState([])
@@ -36,11 +37,9 @@ export default function Playlists() {
                 <a href="/playlists">Reset</a>
             </form>
 
-            {playlists.length ? <ul>
+            {playlists.length ? <ul className='songs'>
                 {playlists.map(playlist => {
-                    return(<li><a href={"/playlists/"+playlist._id}>
-                        <h3>{playlist.name}</h3></a>
-                    </li>)
+                    return(<PlaylistItem key={playlist._id} playlist={playlist} />)
                 })}
             </ul> : <p className='notFound'>Nije pronadjena nijedna playlista</p>}
         </section>

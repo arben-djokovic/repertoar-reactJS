@@ -8,11 +8,20 @@
     justify-content: space-between;
     margin: 0 !important;
     cursor: pointer;
-    // &:hover{
-    //     cursor: pointer;
-    //     opacity: 0.8;
-    // }
     a{
         text-decoration: none;
+    }
+    .add-to-playlist{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        height: 100%;
+        .playlists{
+            display: flex;
+            flex-direction: column;
+            grid-gap: 10px;
+            overflow-x: auto;
+            max-height: 60%;
+        }
     }
 }

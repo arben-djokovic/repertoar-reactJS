@@ -3,6 +3,7 @@ import api from '../../api/apiCalls'
 import { useLocation, useNavigate } from 'react-router-dom';
 import HomeNav from '../../components/home-nav/HomeNav';
 import '../Home/Home.scss'
+import PlaylistItem from '../../components/playlist-item/PlaylistItem';
 
 export default function MyPlaylists() {
     const navigate = useNavigate()
@@ -36,13 +37,10 @@ export default function MyPlaylists() {
                 <button>Search</button>
                 <a href="/playlists">Reset</a>
             </form><br />
-            <button onClick={()=>{navigate('/create-playlist')}}>+ CREATE PLAYLIST</button>
 
             {playlists.length ? <ul>
                 {playlists.map(playlist => {
-                    return(<li><a href={"/playlists/"+playlist._id}>
-                        <h3>{playlist.name}</h3></a>
-                    </li>)
+                    return(<PlaylistItem key={playlist._id} playlist={playlist} />)
                 })}
             </ul> : <p className='notFound'>Nije pronadjena nijedna playlista</p>}
         </section>

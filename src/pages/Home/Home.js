@@ -5,10 +5,12 @@ import HomeNav from '../../components/home-nav/HomeNav';
 import './Home.scss'
 import SongItem from '../../components/song-item/SongItem';
 import { auth } from '../../services/AuthService';
+import { toast } from 'react-toastify';
 
 export default function Home() {
     let [songs, setSongs] = useState([])
     let [genres, setGenres] = useState([])
+    const [playlists, setPlaylists] = useState([])
     const location = useLocation();
     const navigate = useNavigate()
     const queryParams = new URLSearchParams(location.search);
@@ -48,10 +50,25 @@ export default function Home() {
 
         }
     }
+    const getPlaylists = async() => {
+        try{
+          const response =  await api.get('/playlists/')
+          setPlaylists(response.data)
+          console.log(response.data)
+        }catch(err){
+          console.log(err)
+          if(err.response.status == 401 || err.response.status == 403){
+            auth.logout()
+            toast.error(err.response.data.message)
+            navigate("/log-in")
+          }
+        }
+      }
 
     useEffect(()=>{
         getSongs()
         getGenres()
+        getPlaylists()
     },[])
   return (
     <div className='home'>
@@ -71,15 +88,12 @@ export default function Home() {
                 </select>
                 <button>Search</button>
                 <a href="/">Reset</a>
-                {
-                    isAdmin && <button onClick={(e)=>{e.preventDefault(); navigate("/add-song")}}>+ ADD NEW SONG</button>
-                }
             </form>
 
             {songs.length ? <ul className='songs'>
                 {songs.map(song => {
                     return(
-                    <SongItem key={song._id} song={song} isAdmin={isAdmin} />)
+                    <SongItem key={song._id} song={song} playlists={playlists} />)
                 })}
             </ul> : <p className='notFound'>Nije pronadjena nijedna pijesma</p>}
         </section>
