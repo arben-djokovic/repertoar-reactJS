@@ -7,10 +7,11 @@ import api from "../../api/apiCalls";
 import { auth } from "../../services/AuthService";
 import Modal from "../Modal/Modal";
 
-export default function SongItem({ song, playlists }) {
+export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, addToPlaylistBtn}) {
   const navigate = useNavigate();
-  const isAdmin = auth.getAuthAdminStatus();
+  const tokenDecoded = auth.getDecodedToken();
   const [playlistModal, setPlaylistModal] = useState(false);
+  let [playlists, setPlaylists] = useState([])
   let checkedPlaylists = [];
 
   const deleteSong = async (e, id) => {
@@ -47,6 +48,63 @@ export default function SongItem({ song, playlists }) {
     }, 500);
   };
 
+  const getPlaylists = async() => {
+    if(isAdmin && isLogged){
+        try{
+          const response =  await api.get('/playlists/')
+          setPlaylists(response.data)
+          console.log(response.data)
+        }catch(err){
+          console.log(err)
+          if(err.response.status == 401 || err.response.status == 403){
+            auth.logout()
+            toast.error(err.response.data.message)
+            navigate("/log-in")
+          }
+        }
+    }else if(isLogged){
+        try{
+          const response =  await api.get('/playlists/get-mine')
+          setPlaylists(response.data)
+          console.log(response.data)
+        }catch(err){
+          console.log(err)
+          if(err.response.status == 401 || err.response.status == 403){
+            auth.logout()
+            toast.error(err.response.data.message)
+            navigate("/log-in")
+          }
+        }
+    }
+  }
+
+  const addSongToPlaylists = async() => {
+    if(checkedPlaylists.length > 0){
+      checkedPlaylists.forEach(async(checkedPlaylist, i) => {
+        try{
+          const response = await api.post('/playlists/add-song/'+checkedPlaylist, {
+            song_id: song._id
+          })
+          console.log(response)
+          if(response.data.acknowledged == true){
+            toast.success("Song added to " + i+1  +" playlist successfully")
+          }
+        }catch(err){
+          console.log(err)
+          if(err.response.status == 401 || err.response.status == 403){
+            auth.logout()
+            toast.error(err.response.data.message)
+            navigate("/log-in")
+          }
+        }
+      })
+    }
+  }
+
+  useEffect(()=>{
+    getPlaylists()
+},[])
+
   return (
     <>
       <li
@@ -59,8 +117,8 @@ export default function SongItem({ song, playlists }) {
           <h3>{song.title}</h3>
           <p>{song.artist.name ? song.artist.name : "Nepoznato"}</p>
         </div>
-        <Dropdown>
-          {isAdmin && (
+        {isLogged && <Dropdown>
+          {editBtn && isAdmin && (
             <li
               onClick={() => {
                 navigate("/edit-song/" + song._id);
@@ -69,15 +127,15 @@ export default function SongItem({ song, playlists }) {
               Edit
             </li>
           )}
-          {isAdmin && <li onClick={(e) => deleteSong(e, song._id)}>Delete</li>}
-          <li
+          {deleteBtn && isAdmin && <li onClick={(e) => deleteSong(e, song._id)}>Delete</li>}
+          {addToPlaylistBtn && isLogged && <li
             onClick={() => {
               setPlaylistModal(true);
             }}
           >
             Add to playlist
-          </li>
-        </Dropdown>
+          </li>}
+        </Dropdown>}
         {playlistModal && (
           <Modal closeModal={() => setPlaylistModal(false)}>
             <div className="add-to-playlist">
@@ -85,24 +143,24 @@ export default function SongItem({ song, playlists }) {
               <div className="playlists">
                 {playlists &&
                   playlists.map((playlist) => {
-                    if(playlist.songIds.includes(song._id)){
-                      checkedPlaylists.push(playlist._id);
-                    }
-                    return(
-                    <div className="input" key={playlist._id}>
-                      <input
-                        defaultChecked={playlist.songIds.includes(song._id)}
-                        onChange={(e) => {
-                          changeCheckedPlaylists(e, playlist._id);
-                        }}
-                        type="checkbox"
-                        id={playlist._id}
-                      />
-                      <label htmlFor={playlist._id}> {playlist.name}</label>
-                    </div>
-                  )})}
+                    if((playlist.isPublic == true && isAdmin == true) || (playlist.user_id == tokenDecoded._id)){
+                      return(
+                      <div className="input" key={playlist._id}>
+                        <input
+                          disabled={playlist.songIds.includes(song._id)}
+                          defaultChecked={playlist.songIds.includes(song._id)}
+                          onChange={(e) => {
+                            changeCheckedPlaylists(e, playlist._id);
+                          }}
+                          type="checkbox"
+                          id={playlist._id}
+                        />
+                        <label htmlFor={playlist._id}> {playlist.name}</label>
+                      </div>)
+                    } 
+                  })}
               </div>
-              <button>Add</button>
+              <button onClick={addSongToPlaylists}>Add</button>
             </div>
           </Modal>
         )}

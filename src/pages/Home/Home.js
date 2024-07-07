@@ -10,13 +10,14 @@ import { toast } from 'react-toastify';
 export default function Home() {
     let [songs, setSongs] = useState([])
     let [genres, setGenres] = useState([])
-    const [playlists, setPlaylists] = useState([])
+    let [playlists, setPlaylists] = useState([])
     const location = useLocation();
     const navigate = useNavigate()
     const queryParams = new URLSearchParams(location.search);
     const search = queryParams.get('search');
     const genre = queryParams.get('genre');
     let isAdmin = auth.getAuthAdminStatus()
+    let isLogged = auth.getAuthStatus()
 
     const getSongs = async() => {
         let apiCall = '/songs/'
@@ -50,25 +51,11 @@ export default function Home() {
 
         }
     }
-    const getPlaylists = async() => {
-        try{
-          const response =  await api.get('/playlists/')
-          setPlaylists(response.data)
-          console.log(response.data)
-        }catch(err){
-          console.log(err)
-          if(err.response.status == 401 || err.response.status == 403){
-            auth.logout()
-            toast.error(err.response.data.message)
-            navigate("/log-in")
-          }
-        }
-      }
+
 
     useEffect(()=>{
         getSongs()
         getGenres()
-        getPlaylists()
     },[])
   return (
     <div className='home'>
@@ -93,7 +80,7 @@ export default function Home() {
             {songs.length ? <ul className='songs'>
                 {songs.map(song => {
                     return(
-                    <SongItem key={song._id} song={song} playlists={playlists} />)
+                    <SongItem key={song._id} song={song} isAdmin={isAdmin} isLogged={isLogged} editBtn={true} deleteBtn={true} addToPlaylistBtn={true} />)
                 })}
             </ul> : <p className='notFound'>Nije pronadjena nijedna pijesma</p>}
         </section>

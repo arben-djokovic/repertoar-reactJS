@@ -36,11 +36,11 @@ export default function MyPlaylists() {
                 <input type="text" name='search' defaultValue={search} placeholder='example: Rok' />
                 <button>Search</button>
                 <a href="/playlists">Reset</a>
+                <button onClick={()=>{navigate('/create-playlist')}}>+ CREATE PLAYLIST</button>
             </form><br />
-
             {playlists.length ? <ul>
                 {playlists.map(playlist => {
-                    return(<PlaylistItem key={playlist._id} playlist={playlist} />)
+                    return(<PlaylistItem key={playlist._id} playlist={playlist} editBtn={true} deleteBtn={true} />)
                 })}
             </ul> : <p className='notFound'>Nije pronadjena nijedna playlista</p>}
         </section>

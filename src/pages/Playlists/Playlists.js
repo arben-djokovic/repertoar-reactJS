@@ -39,7 +39,7 @@ export default function Playlists() {
 
             {playlists.length ? <ul className='songs'>
                 {playlists.map(playlist => {
-                    return(<PlaylistItem key={playlist._id} playlist={playlist} />)
+                    return(<PlaylistItem key={playlist._id} playlist={playlist} editBtn={true} deleteBtn={true} />)
                 })}
             </ul> : <p className='notFound'>Nije pronadjena nijedna playlista</p>}
         </section>

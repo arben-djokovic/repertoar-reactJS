@@ -19,6 +19,16 @@ class AuthService {
       return false
     }
   };
+  getDecodedToken = () => {
+    let token = localStorage.getItem("token");
+    if (!!token) {this.setJWT(token)}else{return false};
+    try{
+      const decodedToken = jwtDecode(token);
+      return decodedToken;
+    }catch(err){
+      return false
+    }
+  };
 
   setJWT = (token) =>
     (api.defaults.headers.common["Authorization"] = `Bearer ${token}`);

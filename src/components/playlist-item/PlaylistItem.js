@@ -6,9 +6,10 @@ import { toast } from "react-toastify";
 import api from "../../api/apiCalls";
 import { auth } from "../../services/AuthService";
 
-export default function PlaylistItem({ playlist }) {
+export default function PlaylistItem({ playlist, editBtn, deleteBtn }) {
   const navigate = useNavigate();
   const isAdmin = auth.getAuthAdminStatus();
+  const isLogged = auth.getAuthStatus();
 
   const deletePlaylist = async(e, id) => {
     const confrim =  window.confirm("Are you sure you want to delete this playlist?");
@@ -30,6 +31,16 @@ export default function PlaylistItem({ playlist }) {
     }
 
   }
+  
+  // const addToFavorites = (e) => {
+  //   e.stopPropagation()
+  //   const confrim = window.confirm("Are you sure you want to add this playlist to your favorites?")
+  //   if(confrim){
+  //     e.target.classList.toggle("star-selected");
+  //   }
+  // } 
+
+
   return (
     <li
       className="song-item"
@@ -37,12 +48,13 @@ export default function PlaylistItem({ playlist }) {
         navigate("/playlists/" + playlist._id);
       }}
     >
-      <div>
+      <div className="left">
+        {/* <i onClick={addToFavorites} className="fa fa-star star-selected" aria-hidden="true"></i> */}
         <h3>{playlist.name}</h3>
       </div>
         <Dropdown>
-           {isAdmin && <li onClick={()=>{navigate("/edit-playlist/"+playlist._id)}}>Edit</li>}
-           {isAdmin && <li onClick={(e)=>deletePlaylist(e, playlist._id)}>Delete</li>}
+           {isAdmin && editBtn && isAdmin && <li onClick={()=>{navigate("/edit-playlist/"+playlist._id)}}>Edit</li>}
+           {isAdmin && deleteBtn && isAdmin && <li onClick={(e)=>deletePlaylist(e, playlist._id)}>Delete</li>}
            </Dropdown>
     </li>
   );

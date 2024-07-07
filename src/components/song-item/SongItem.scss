@@ -8,6 +8,19 @@
     justify-content: space-between;
     margin: 0 !important;
     cursor: pointer;
+    .left{
+        display: flex;
+        align-items: center;
+        grid-gap: 10px;
+        .fa-star{
+            font-size: 25px;
+            padding: 0 10px;
+            color: gray;
+        }
+        .star-selected{
+            color: rgb(255, 30, 0);
+        }
+    }
     a{
         text-decoration: none;
     }
