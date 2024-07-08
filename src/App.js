@@ -21,6 +21,8 @@ import AddGenre from './pages/AddGenre';
 import Song from './pages/Song/Song';
 import EditSong from './pages/EditSong/EditSong';
 import EditPlaylist from './pages/EditPlaylist';
+import Artists from './pages/Artists/Artists';
+import EditArtist from './pages/EditArtist';
 
 
 function App() {
@@ -43,6 +45,8 @@ function App() {
         <Route path='/songs/:id' element={<Song />} />
         <Route path='/edit-song/:id' element={<AdminRoute><EditSong /></AdminRoute>} />
         <Route path='/edit-playlist/:id' element={<PrivateRoute><EditPlaylist /></PrivateRoute>} />
+        <Route path='/artists' element={<AdminRoute><Artists /></AdminRoute>} />
+        <Route path='/edit-artist/:id' element={<AdminRoute><EditArtist /></AdminRoute>} />
       </Routes>
       <ToastContainer />
     </div>

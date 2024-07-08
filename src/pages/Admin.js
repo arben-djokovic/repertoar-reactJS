@@ -14,6 +14,7 @@ export default function Admin() {
           <button onClick={()=>{navigate("/add-song")}}>+ ADD SONG</button>
           <button onClick={()=>{navigate("/add-artist")}}>+ ADD ARTIST</button>
           <button onClick={()=>{navigate("/add-genre")}}>+ ADD GENRE</button>
+          <button style={{backgroundColor: "green"}} onClick={()=>{navigate("/artists")}}>Artists</button>
       </section>
     </div>
   )
