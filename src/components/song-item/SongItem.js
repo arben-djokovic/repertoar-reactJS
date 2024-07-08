@@ -88,6 +88,7 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
           console.log(response)
           if(response.data.acknowledged == true){
             toast.success("Song added to " + i+1  +" playlist successfully")
+            setPlaylistModal(false)
             let playlistEdit = playlists
               playlistEdit.forEach((element, i) => {
                 if(element._id == checkedPlaylist){
@@ -109,8 +110,23 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
       })
     }
   }
-  const removeSongFromPlaylist = () => {
-
+  const removeSongFromPlaylist = async(e) => {
+    const confrim =  window.confirm("Are you sure you want to remove this song from playlist?");
+    if (confrim) {
+      try{
+        const response = await api.patch("/playlists/remove-song/"+playlistId, {
+          song_id: song._id
+        })
+        console.log(response)
+        if(response.data.acknowledged == true){
+          toast.success("Song removed from playlist successfully")
+          e.target.parentElement.parentElement.parentElement.style.display = 'none'
+        }
+      }catch(err){
+        console.log(err)
+        toast.error("Something went wrong")
+      }
+    }
   }
 
   useEffect(()=>{

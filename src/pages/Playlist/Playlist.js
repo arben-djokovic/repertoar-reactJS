@@ -60,7 +60,7 @@ export default function Playlist() {
             </Dropdown>
         </div>
         {playlist.songs[0].title != undefined ? playlist.songs.map(song => {
-            return <SongItem key={song._id} song={song} isAdmin={isAdmin} isLogged={isLogged} removeFromPlaylist={true}  />
+            return <SongItem key={song._id} song={song} isAdmin={isAdmin} isLogged={isLogged} removeFromPlaylist={true} playlistId={id}  />
         }): <p className='notFound'>Nije pronadjena nijedna pjesma</p>}
     </div>
   )
