@@ -7,7 +7,7 @@ import api from "../../api/apiCalls";
 import { auth } from "../../services/AuthService";
 import Modal from "../Modal/Modal";
 
-export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, addToPlaylistBtn}) {
+export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, addToPlaylistBtn, removeFromPlaylist, playlistId}) {
   const navigate = useNavigate();
   const tokenDecoded = auth.getDecodedToken();
   const [playlistModal, setPlaylistModal] = useState(false);
@@ -88,6 +88,15 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
           console.log(response)
           if(response.data.acknowledged == true){
             toast.success("Song added to " + i+1  +" playlist successfully")
+            let playlistEdit = playlists
+              playlistEdit.forEach((element, i) => {
+                if(element._id == checkedPlaylist){
+                  playlistEdit[i].songIds.push(song._id)
+                }
+              });
+              setTimeout(() => {
+                setPlaylists(playlistEdit)
+              }, 500);
           }
         }catch(err){
           console.log(err)
@@ -99,6 +108,9 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
         }
       })
     }
+  }
+  const removeSongFromPlaylist = () => {
+
   }
 
   useEffect(()=>{
@@ -135,6 +147,7 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
           >
             Add to playlist
           </li>}
+          {removeFromPlaylist && <li onClick={removeSongFromPlaylist}>Remove from playlist</li>}
         </Dropdown>}
         {playlistModal && (
           <Modal closeModal={() => setPlaylistModal(false)}>
