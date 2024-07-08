@@ -40,7 +40,7 @@ export default function Artists() {
     <div className='artistPage'>
         <ul className='artists'>
             {artists.map(artist => {
-                return <li className='artist'>
+                return <li key={artist._id} className='artist'>
                     <h3>{artist.name}</h3>
                     <Dropdown>
                         <li onClick={()=>{navigate('/edit-artist/'+artist._id)}}>edit</li>
