@@ -22,6 +22,7 @@ export default function Login() {
           if(response.data.token){
             auth.login(response.data.token, username)
             toast.dismiss()
+            localStorage.setItem('favourites', JSON.stringify(response.data.favourites));
             toast.success("Uspjesna prijava")
             navigate("/")
           }else{

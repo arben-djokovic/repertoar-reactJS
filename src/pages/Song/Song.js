@@ -20,8 +20,14 @@ export default function Song({inPlaylist}) {
     let [playlists, setPlaylists] = useState([])
     let [playlistModal, setPlaylistModal] = useState(false);
     let checkedPlaylists = [];
-
-
+    var listaAkorda = ["C","C#","D","D#","E","F","F#","G","G#","A","B","H"]
+    var listaAkordaSaM = ["Cm","C#m","Dm","D#m","Em","Fm","F#m","Gm","G#m","Am","Bm","Hm"]
+    var listaSedamM = ["Cm7","C#m7","Dm7","D#m7","Em7","Fm7","F#m7","Gm7","G#m7","Am7","Bm7","Hm7"]
+    var listaSedam = ["C7","C#7","D7","D#7","E7","F7","F#7","G7","G#7","A7","B7","H7"]
+    var listaAkordaSus2 = ["Csus2","C#sus2","Dsus2","D#sus2","Esus2","Fsus2","F#sus2","Gsus2","G#sus2","Asus2","Bsus2","Hsus2"]
+    var listaAkordaSus4 = ["Csus4","C#sus4","Dsus4","D#sus4","Esus4","Fsus4","F#sus4","Gsus4","G#sus4","Asus4","Bsus4","Hsus4"]
+    
+    
     const getSong = async() => {
         try{
             const response = await api.get("/songs/"+id)
@@ -202,6 +208,163 @@ export default function Song({inPlaylist}) {
         navigate("/playlists/"+playlistId+"/songs/"+playlist.songs[randomIndex]._id)
       }
     }
+
+    const smanjiStepen = () => {
+      let songTextEdited = song.text2
+      song.text2.forEach((element, i) => {
+        let newElement = element
+        if(i%2!==1){
+          songTextEdited[i]  = ''
+          if(!/^\s*$/.test(element)){
+            let row = element.split(" ")
+
+
+            listaSedamM.forEach((akordSa7M, i2) => {
+              if(row.includes(akordSa7M)){
+                if(i2 == 0){
+                  newElement = newElement.replace(akordSa7M, listaSedamM[listaSedamM.length-1])
+                }else{
+                  newElement = newElement.replace(akordSa7M, listaSedamM[i2-1])
+                }
+              }
+            });
+            
+            listaAkordaSaM.forEach((akordSaM, i2) => {
+              if(row.includes(akordSaM)){
+                if(i2 == 0){
+                  newElement = newElement.replace(akordSaM, listaAkordaSaM[listaAkordaSaM.length-1])
+                }else{
+                  newElement = newElement.replace(akordSaM, listaAkordaSaM[i2-1])
+                }
+              }
+            });
+
+            listaSedam.forEach((akordSa7, i2) => {
+              if(row.includes(akordSa7)){
+                if(i2 == 0){
+                  newElement = newElement.replace(akordSa7, listaSedam[listaSedam.length-1])
+                }else{
+                  newElement = newElement.replace(akordSa7, listaSedam[i2-1])
+                }
+              }
+            });
+
+            listaAkordaSus2.forEach((akordSaSus2, i2) => {
+              if(row.includes(akordSaSus2)){
+                if(i2 == 0){
+                  newElement = newElement.replace(akordSaSus2, listaAkordaSus2[listaAkordaSus2.length-1])
+                }else{
+                  newElement = newElement.replace(akordSaSus2, listaAkordaSus2[i2-1])
+                }
+              }
+            });
+
+            listaAkordaSus4.forEach((akordSaSus4, i2) => {
+              if(row.includes(akordSaSus4)){
+                if(i2 == 0){
+                  newElement = newElement.replace(akordSaSus4, listaAkordaSus4[listaAkordaSus4.length-1])
+                }else{
+                  newElement = newElement.replace(akordSaSus4, listaAkordaSus4[i2-1])
+                }
+              }
+            });
+
+            listaAkorda.forEach((akordClassic, i2) => {
+              if(row.includes(akordClassic)){
+                if(i2 == 0){
+                  newElement = newElement.replace(akordClassic, listaAkorda[listaAkorda.length-1])
+                }else{
+                  newElement = newElement.replace(akordClassic, listaAkorda[i2-1])
+                }
+              }
+            });
+          }
+          songTextEdited[i] = newElement
+        }else{
+          songTextEdited[i] = element
+        }
+      })
+      setSong({...song, text2: songTextEdited})
+    }
+    const povecajStepen = () => {
+      let songTextEdited = song.text2
+      song.text2.forEach((element, i) => {
+        let newElement = element
+        if(i%2!==1){
+          songTextEdited[i]  = ''
+          if(!/^\s*$/.test(element)){
+            let row = element.split(" ")
+
+
+            listaSedamM.forEach((akordSa7M, i2) => {
+              if(row.includes(akordSa7M)){
+                if(i2 == listaSedamM.length-1){
+                  newElement = newElement.replace(akordSa7M, listaSedamM[0])
+                }else{
+                  newElement = newElement.replace(akordSa7M, listaSedamM[i2+1])
+                }
+              }
+            });
+            
+            listaAkordaSaM.forEach((akordSaM, i2) => {
+              if(row.includes(akordSaM)){
+                if(i2 == listaSedamM.length-1){
+                  newElement = newElement.replace(akordSaM, listaAkordaSaM[0])
+                }else{
+                  newElement = newElement.replace(akordSaM, listaAkordaSaM[i2+1])
+                }
+              }
+            });
+
+            listaSedam.forEach((akordSa7, i2) => {
+              if(row.includes(akordSa7)){
+                if(i2 == listaSedamM.length-1){
+                  newElement = newElement.replace(akordSa7, listaSedam[0])
+                }else{
+                  newElement = newElement.replace(akordSa7, listaSedam[i2+1])
+                }
+              }
+            });
+
+            listaAkordaSus2.forEach((akordSaSus2, i2) => {
+              if(row.includes(akordSaSus2)){
+                if(i2 == listaSedamM.length-1){
+                  newElement = newElement.replace(akordSaSus2, listaAkordaSus2[0])
+                }else{
+                  newElement = newElement.replace(akordSaSus2, listaAkordaSus2[i2+1])
+                }
+              }
+            });
+
+            listaAkordaSus4.forEach((akordSaSus4, i2) => {
+              if(row.includes(akordSaSus4)){
+                if(i2 == listaSedamM.length-1){
+                  newElement = newElement.replace(akordSaSus4, listaAkordaSus4[0])
+                }else{
+                  newElement = newElement.replace(akordSaSus4, listaAkordaSus4[i2+1])
+                }
+              }
+            });
+
+            listaAkorda.forEach((akordClassic, i2) => {
+              if(row.includes(akordClassic)){
+                if(i2 == listaSedamM.length-1){
+                  newElement = newElement.replace(akordClassic, listaAkorda[0])
+                }else{
+                  newElement = newElement.replace(akordClassic, listaAkorda[i2+1])
+                }
+              }
+            });
+          }
+          songTextEdited[i] = newElement
+        }else{
+          songTextEdited[i] = element
+        }
+      })
+      setSong({...song, text2: songTextEdited})
+    }
+
+
     useEffect(()=>{
         getSong()
         getPlaylists()
@@ -266,8 +429,8 @@ export default function Song({inPlaylist}) {
         <section className="main">
           <section className="commands">
             <div className="buttons">
-              <button>Smanji za 1</button>
-              <button>Povecaj za 1</button>
+              <button onClick={smanjiStepen}>Smanji za 1</button>
+              <button onClick={povecajStepen}>Povecaj za 1</button>
             </div>
           </section>
           <pre className="text">

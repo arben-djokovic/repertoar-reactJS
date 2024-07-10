@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import api from "../../api/apiCalls";
 import { auth } from "../../services/AuthService";
 
-export default function PlaylistItem({ playlist, editBtn, deleteBtn }) {
+export default function PlaylistItem({ playlist, editBtn, deleteBtn, favourites }) {
   const navigate = useNavigate();
   const isAdmin = auth.getAuthAdminStatus();
   const isLogged = auth.getAuthStatus();
@@ -33,13 +33,32 @@ export default function PlaylistItem({ playlist, editBtn, deleteBtn }) {
 
   }
   
-  // const addToFavorites = (e) => {
-  //   e.stopPropagation()
-  //   const confrim = window.confirm("Are you sure you want to add this playlist to your favorites?")
-  //   if(confrim){
-  //     e.target.classList.toggle("star-selected");
-  //   }
-  // } 
+  const addToFavorites = async(e) => {
+    e.stopPropagation()
+    const confrim = window.confirm("Are you sure?")
+    if(confrim && !localStorage.getItem("favourites").includes(playlist._id)){
+      try{
+        const response = await api.post("/playlists/add-to-favourites/"+playlist._id)
+        console.log(response)
+        localStorage.setItem("favourites", JSON.stringify([...JSON.parse(localStorage.getItem("favourites") || "[]"), playlist._id]))
+        e.target.classList.toggle("star-selected");
+      }catch(err){
+        console.log(err)
+      }
+    }else if(confrim && localStorage.getItem("favourites").includes(playlist._id)){
+      try{
+        const response = await api.post("/playlists/remove-from-favourites/"+playlist._id)
+        console.log(response)
+        localStorage.setItem("favourites", JSON.stringify(JSON.parse(localStorage.getItem("favourites")).filter((id) => id != playlist._id)))
+        e.target.classList.toggle("star-selected");
+        if(favourites){
+          e.target.parentElement.parentElement.style.display = 'none'
+        }
+      }catch(err){
+        console.log(err)
+      }
+    }
+  } 
 
 
   return (
@@ -50,7 +69,7 @@ export default function PlaylistItem({ playlist, editBtn, deleteBtn }) {
       }}
     >
       <div className="left">
-        {/* <i onClick={addToFavorites} className="fa fa-star star-selected" aria-hidden="true"></i> */}
+        {isLogged && <i onClick={addToFavorites} className={localStorage.getItem("favourites") && localStorage.getItem("favourites").includes(playlist._id) ? "fa fa-star star-selected" : "fa fa-star"} aria-hidden="true"></i>}
         <h3>{playlist.name}</h3>
       </div>
         {isLogged && <Dropdown>

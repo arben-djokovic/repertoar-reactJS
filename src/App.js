@@ -25,6 +25,7 @@ import Artists from './pages/Artists/Artists';
 import EditArtist from './pages/EditArtist';
 import Genres from './pages/Genres';
 import EditGenre from './pages/EditGenre';
+import FavouritePlaylists from './pages/Favourite/FavouritePlaylists';
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
         <Route path='/genres' element={<AdminRoute><Genres /></AdminRoute>} />
         <Route path='/edit-artist/:id' element={<AdminRoute><EditArtist /></AdminRoute>} />
         <Route path='/edit-genre/:id' element={<AdminRoute><EditGenre /></AdminRoute>} />
+        <Route path='/favourites' element={<PrivateRoute><FavouritePlaylists /></PrivateRoute>} />
       </Routes>
       <ToastContainer />
     </div>
