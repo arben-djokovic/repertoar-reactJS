@@ -7,8 +7,8 @@ export default function HomeNav() {
   return (
     <nav className='homeNav'>
         <ul>
-            <li><a href="/">All Songs</a></li>
-            <li><a href="/playlists">All Playlists</a></li>
+            <li><a href="/">Songs</a></li>
+            <li><a href="/playlists">Playlists</a></li>
             {isLogged && <li><a href="/my-playlists">My Playlists</a></li>}
         </ul>
     </nav>

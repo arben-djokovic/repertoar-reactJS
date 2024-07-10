@@ -10,6 +10,7 @@ export default function PlaylistItem({ playlist, editBtn, deleteBtn }) {
   const navigate = useNavigate();
   const isAdmin = auth.getAuthAdminStatus();
   const isLogged = auth.getAuthStatus();
+  const tokenDecoded = auth.getDecodedToken();
 
   const deletePlaylist = async(e, id) => {
     const confrim =  window.confirm("Are you sure you want to delete this playlist?");
@@ -52,10 +53,10 @@ export default function PlaylistItem({ playlist, editBtn, deleteBtn }) {
         {/* <i onClick={addToFavorites} className="fa fa-star star-selected" aria-hidden="true"></i> */}
         <h3>{playlist.name}</h3>
       </div>
-        <Dropdown>
-           {isAdmin && editBtn && isAdmin && <li onClick={()=>{navigate("/edit-playlist/"+playlist._id)}}>Edit</li>}
-           {isAdmin && deleteBtn && isAdmin && <li onClick={(e)=>deletePlaylist(e, playlist._id)}>Delete</li>}
-           </Dropdown>
+        {isLogged && <Dropdown>
+           {(isAdmin || playlist.user_id == tokenDecoded._id) && editBtn && <li onClick={()=>{navigate("/edit-playlist/"+playlist._id)}}>Edit</li>}
+           {(isAdmin || playlist.user_id == tokenDecoded._id)  && deleteBtn && <li onClick={(e)=>deletePlaylist(e, playlist._id)}>Delete</li>}
+           </Dropdown>}
     </li>
   );
 }

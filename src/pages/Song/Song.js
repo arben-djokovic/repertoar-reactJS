@@ -5,30 +5,45 @@ import api from '../../api/apiCalls'
 import { auth } from '../../services/AuthService'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import Modal from '../../components/Modal/Modal'
+import "./Song.scss"
 
-export default function Song() {
+export default function Song({inPlaylist}) {
   const navigate = useNavigate()
     const {id} = useParams()
-    let [song, setSong] = useState({title: "loading..."})
+    const {playlistId} = useParams()
     const isAdmin = auth.getAuthAdminStatus()
     const isLogged = auth.getAuthStatus()
-    const [playlistModal, setPlaylistModal] = useState(false);
-    let [playlists, setPlaylists] = useState([])
-    let checkedPlaylists = [];
     const tokenDecoded = auth.getDecodedToken();
+    let [song, setSong] = useState({title: "loading...", artist: {name: "loading..."}, text2: []})
+    let [songs, setSongs] = useState([])
+    let [playlist, setPlaylist] = useState({})
+    let [playlists, setPlaylists] = useState([])
+    let [playlistModal, setPlaylistModal] = useState(false);
+    let checkedPlaylists = [];
 
 
     const getSong = async() => {
         try{
             const response = await api.get("/songs/"+id)
-            console.log(response)
+            let songEdit = response.data
+            songEdit.text2 = response.data.text.split("\n")
             setSong(response.data)
+
         }catch(err){
             toast.error(err.response.data.message)
             console.log(err)
-            // navigate("/")
         }
     }
+    
+    const getSongs = async() => {
+      try{
+          const response = await api.get("/songs/")
+          setSongs(response.data)
+      }catch(err){
+          toast.error(err.response.data.message)
+          console.log(err)
+      }
+  }
 
     const deleteSong = async (e, id) => {
       const confrim = window.confirm(
@@ -58,9 +73,6 @@ export default function Song() {
       } else {
         checkedPlaylists = checkedPlaylists.filter((playlist) => playlist != id);
       }
-      setTimeout(() => {
-        console.log(checkedPlaylists);
-      }, 500);
     };
   
     const getPlaylists = async() => {
@@ -68,7 +80,6 @@ export default function Song() {
           try{
             const response =  await api.get('/playlists/')
             setPlaylists(response.data)
-            console.log(response.data)
           }catch(err){
             console.log(err)
             if(err.response.status == 401 || err.response.status == 403){
@@ -81,7 +92,6 @@ export default function Song() {
           try{
             const response =  await api.get('/playlists/get-mine')
             setPlaylists(response.data)
-            console.log(response.data)
           }catch(err){
             console.log(err)
             if(err.response.status == 401 || err.response.status == 403){
@@ -100,7 +110,6 @@ export default function Song() {
             const response = await api.post('/playlists/add-song/'+checkedPlaylist, {
               song_id: song._id
             })
-            console.log(response)
             if(response.data.acknowledged == true){
               toast.success("Song added to " + i+1  +" playlist successfully")
               let playlistEdit = playlists
@@ -126,15 +135,87 @@ export default function Song() {
         checkedPlaylists = []
       }
     }
+
+    const getPlaylist = async() => {
+      try{
+          const response =  await api.get('/playlists/'+playlistId)
+          setPlaylist(response.data)
+        }catch(err){
+          console.log(err)
+          if(err.response.status == 401 || err.response.status == 403){
+            auth.logout()
+            toast.error(err.response.data.message)
+            navigate("/log-in")
+          }
+        }
+    }
+
+    const previousSong = async() => {
+      if(inPlaylist){
+        let indexOfSong = playlist.songIds.indexOf(id);
+        if(indexOfSong == 0){
+          navigate("/playlists/"+playlistId+"/songs/"+playlist.songIds[playlist.songIds.length-1])
+        }else{
+          navigate("/playlists/"+playlistId+"/songs/"+playlist.songIds[indexOfSong-1])
+        }
+      }else{
+        let index = songs.findIndex(function(song) { return song._id === id;});
+        if(index == 0){
+          navigate("/songs/"+songs[songs.length-1]._id)
+        }else{
+          navigate("/songs/"+songs[index-1]._id)
+        }
+      }
+    }
+    const nextSong = () => {
+      if(inPlaylist){
+        let indexOfSong = playlist.songIds.indexOf(id);
+        if(indexOfSong == playlist.songIds.length-1){
+          navigate("/playlists/"+playlistId+"/songs/"+playlist.songIds[0])
+        }else{
+          navigate("/playlists/"+playlistId+"/songs/"+playlist.songIds[indexOfSong+1])
+        }
+      }else{
+        let index = songs.findIndex(function(song) { return song._id === id;});
+        if(index == songs.length-1){
+          navigate("/songs/"+songs[0]._id)
+        }else{
+          navigate("/songs/"+songs[index+1]._id)
+        }
+      }
+    }
+    const randomSong = async() => {
+      if(!inPlaylist){
+        try{
+          const response = await api.get('/songs/random')
+          navigate("/songs/"+response.data._id)
+          getSong()
+        }catch(err){
+          toast.error("Error while getting previous song")
+        }
+      }else{
+        let indexOfSong = playlist.songIds.indexOf(id);
+        let randomIndex = Math.floor(Math.random() * playlist.songs.length);
+        while(randomIndex == indexOfSong){
+          randomIndex = Math.floor(Math.random() * playlist.songs.length);
+        }
+        navigate("/playlists/"+playlistId+"/songs/"+playlist.songs[randomIndex]._id)
+      }
+    }
     useEffect(()=>{
         getSong()
         getPlaylists()
-    },[])
+        if(inPlaylist){
+          getPlaylist()
+        }else{
+          getSongs()
+        }
+    },[id])
   return (
-    <div>
+    <div className='songPage'>
         <div className='naslov'>
-          <h1>{song.title}</h1>
-          <Dropdown>
+          <h1>{song.title} <br /> <span style={{fontSize: "17px"}}>{song.artist ? song.artist.name : 'undefined'}</span></h1>
+          {isLogged && <Dropdown>
           {isAdmin && (
             <li
               onClick={() => {
@@ -145,14 +226,14 @@ export default function Song() {
             </li>
           )}
           {isAdmin && <li onClick={(e) => deleteSong(e, song._id)}>Delete</li>}
-          {isLogged && <li
+        <li
             onClick={() => {
               setPlaylistModal(true);
             }}
           >
             Add to playlist
-          </li>}
-          </Dropdown>
+          </li>
+          </Dropdown>}
           {playlistModal && (
           <Modal closeModal={() => setPlaylistModal(false)}>
             <div className="add-to-playlist">
@@ -182,10 +263,24 @@ export default function Song() {
           </Modal>
         )}
         </div>
-        <br />
-        <div className="text">
-          {song.text}
-        </div>
+        <section className="main">
+          <section className="commands">
+            <div className="buttons">
+              <button>Smanji za 1</button>
+              <button>Povecaj za 1</button>
+            </div>
+          </section>
+          <pre className="text">
+            {song.text2.map((text, i) => {
+                return(<p key={i} style={{ color: i % 2 === 1 ? 'black' : 'red' }}>{text}</p>)
+            })}
+          </pre>
+          <div className="changeSong">
+            <button onClick={previousSong}><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
+            <button onClick={nextSong}><i className="fa fa-arrow-right" aria-hidden="true"></i></button>
+            <button onClick={randomSong}>Random <i className="fa fa-random" aria-hidden="true"></i></button>
+          </div>
+        </section>
     </div>
   )
 }

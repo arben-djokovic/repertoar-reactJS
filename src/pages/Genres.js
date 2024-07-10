@@ -38,6 +38,7 @@ export default function Genres() {
     },[])
   return (
     <div className='artistPage'>
+        <button onClick={()=>{navigate("/add-genre")}}>+ ADD GENRE</button>
         <ul className='artists'>
             {genres.map(genre => {
                 return <li key={genre._id} className='artist'>

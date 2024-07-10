@@ -45,6 +45,7 @@ function App() {
         <Route path='/add-artist' element={<AdminRoute><AddArtist /></AdminRoute>} />
         <Route path='/add-genre' element={<AdminRoute><AddGenre /></AdminRoute>} />
         <Route path='/songs/:id' element={<Song />} />
+        <Route path='playlists/:playlistId/songs/:id' element={<Song inPlaylist={true} />} />
         <Route path='/edit-song/:id' element={<AdminRoute><EditSong /></AdminRoute>} />
         <Route path='/edit-playlist/:id' element={<PrivateRoute><EditPlaylist /></PrivateRoute>} />
         <Route path='/artists' element={<AdminRoute><Artists /></AdminRoute>} />

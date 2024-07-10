@@ -37,6 +37,7 @@ export default function Home() {
         try{
             const response =  await api.get(apiCall)
             setSongs(response.data)
+            console.log(response.data)
         }catch(err){
 
         }
@@ -45,7 +46,6 @@ export default function Home() {
     const getGenres = async() => {
         try{
             const response =  await api.get('/genres/')
-            console.log(response)
             setGenres(response.data)
         }catch(err){
 

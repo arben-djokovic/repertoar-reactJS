@@ -7,7 +7,7 @@ import api from "../../api/apiCalls";
 import { auth } from "../../services/AuthService";
 import Modal from "../Modal/Modal";
 
-export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, addToPlaylistBtn, removeFromPlaylist, playlistId}) {
+export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, addToPlaylistBtn, removeFromPlaylist, playlistId, playlistUserId, isPublic}) {
   const navigate = useNavigate();
   const tokenDecoded = auth.getDecodedToken();
   const [playlistModal, setPlaylistModal] = useState(false);
@@ -43,9 +43,6 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
     } else {
       checkedPlaylists = checkedPlaylists.filter((playlist) => playlist != id);
     }
-    setTimeout(() => {
-      console.log(checkedPlaylists);
-    }, 500);
   };
 
   const getPlaylists = async() => {
@@ -53,7 +50,6 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
         try{
           const response =  await api.get('/playlists/')
           setPlaylists(response.data)
-          console.log(response.data)
         }catch(err){
           console.log(err)
           if(err.response.status == 401 || err.response.status == 403){
@@ -66,7 +62,6 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
         try{
           const response =  await api.get('/playlists/get-mine')
           setPlaylists(response.data)
-          console.log(response.data)
         }catch(err){
           console.log(err)
           if(err.response.status == 401 || err.response.status == 403){
@@ -85,7 +80,6 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
           const response = await api.post('/playlists/add-song/'+checkedPlaylist, {
             song_id: song._id
           })
-          console.log(response)
           if(response.data.acknowledged == true){
             toast.success("Song added to " + i+1  +" playlist successfully")
             setPlaylistModal(false)
@@ -111,20 +105,21 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
     }
   }
   const removeSongFromPlaylist = async(e) => {
-    const confrim =  window.confirm("Are you sure you want to remove this song from playlist?");
-    if (confrim) {
-      try{
-        const response = await api.patch("/playlists/remove-song/"+playlistId, {
-          song_id: song._id
-        })
-        console.log(response)
-        if(response.data.acknowledged == true){
-          toast.success("Song removed from playlist successfully")
-          e.target.parentElement.parentElement.parentElement.style.display = 'none'
+    if((isPublic == true && isAdmin) || playlistUserId == tokenDecoded._id){
+      const confrim =  window.confirm("Are you sure you want to remove this song from playlist?");
+      if (confrim) {
+        try{
+          const response = await api.patch("/playlists/remove-song/"+playlistId, {
+            song_id: song._id
+          })
+          if(response.data.acknowledged == true){
+            toast.success("Song removed from playlist successfully")
+            e.target.parentElement.parentElement.parentElement.style.display = 'none'
+          }
+        }catch(err){
+          console.log(err)
+          toast.error("Something went wrong")
         }
-      }catch(err){
-        console.log(err)
-        toast.error("Something went wrong")
       }
     }
   }
@@ -138,7 +133,11 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
       <li
         className="song-item"
         onClick={() => {
-          navigate("/songs/" + song._id);
+          if(playlistId){            
+            navigate("/playlists/" + playlistId + "/songs/" + song._id);
+          }else{
+            navigate("/songs/" + song._id);
+          }
         }}
       >
         <div>
@@ -163,7 +162,7 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
           >
             Add to playlist
           </li>}
-          {removeFromPlaylist && <li onClick={removeSongFromPlaylist}>Remove from playlist</li>}
+          {removeFromPlaylist && (isPublic == true && isAdmin) || playlistUserId == tokenDecoded._id && <li onClick={removeSongFromPlaylist}>Remove from playlist</li>}
         </Dropdown>}
         {playlistModal && (
           <Modal closeModal={() => setPlaylistModal(false)}>

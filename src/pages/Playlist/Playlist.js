@@ -12,12 +12,12 @@ export default function Playlist() {
     let [playlist, setPlaylist] = useState({name: "loading...", songs: [{title: undefined}]})
     const isAdmin = auth.getAuthAdminStatus()
     const isLogged = auth.getAuthStatus()
+    const tokenDecoded = auth.getDecodedToken();
 
 
     const getPlaylist = async() => {
         try{
             const response = await api.get("/playlists/"+id)
-            console.log(response)
             setPlaylist(response.data)
         }catch(err){
             toast.error(err.response.data.message)
@@ -54,13 +54,13 @@ export default function Playlist() {
     <div>
         <div className='naslov'>
             <h1>{playlist.name}</h1>
-            <Dropdown>
-                {isAdmin && <li onClick={()=>{navigate("/edit-playlist/"+playlist._id)}}>Edit</li>}
-                {isAdmin && <li onClick={(e)=>deletePlaylist(e, playlist._id)}>Delete</li>}
-            </Dropdown>
+            {isLogged && <Dropdown>
+                {(isAdmin || playlist.user_id == tokenDecoded._id)  && <li onClick={()=>{navigate("/edit-playlist/"+playlist._id)}}>Edit</li>}
+                {(isAdmin || playlist.user_id == tokenDecoded._id)  && <li onClick={(e)=>deletePlaylist(e, playlist._id)}>Delete</li>}
+            </Dropdown>}
         </div>
         {playlist.songs[0].title != undefined ? playlist.songs.map(song => {
-            return <SongItem key={song._id} song={song} isAdmin={isAdmin} isLogged={isLogged} removeFromPlaylist={true} playlistId={id}  />
+            return <SongItem key={song._id} song={song} isAdmin={isAdmin} isLogged={isLogged} removeFromPlaylist={true} playlistId={playlist._id} playlistUserId={playlist.user_id} isPublic={playlist.isPublic} />
         }): <p className='notFound'>Nije pronadjena nijedna pjesma</p>}
     </div>
   )

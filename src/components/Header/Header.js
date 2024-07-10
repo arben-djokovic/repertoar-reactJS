@@ -28,7 +28,7 @@ export default function Header() {
     <i  onClick={tooggleNav} className="fa fa-times" aria-hidden="true"></i>
       <a href="/">Home</a>
       {isAdmin && <a href="/admin">Admin</a>}
-      {isLogged && <a href="/me">Profile</a>}
+      {/* {isLogged && <a href="/me">Profile</a>} */}
       {!isLogged && <a href="/log-in"><button>Log in</button></a>}
       {isLogged && <button onClick={()=>{localStorage.clear(); navigate("/")}}>Log out</button>}
     </nav>

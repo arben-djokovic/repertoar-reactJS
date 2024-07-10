@@ -1,0 +1,26 @@
+.songPage{
+    .main{
+        display: flex;
+        flex-direction: column;
+        grid-gap: 20px;
+        padding: 30px;  
+        .text{
+            font-size: 12px;
+            width: 50vw;
+        }
+        .commands{
+            // width: 30%;
+            text-align: center;
+            .buttons{
+                display: flex;
+                grid-gap: 20px;
+                align-items: center;
+            }
+        }
+        .changeSong{
+            display: flex;
+            align-items: center;
+            grid-gap: 20px;
+        }
+    }
+}

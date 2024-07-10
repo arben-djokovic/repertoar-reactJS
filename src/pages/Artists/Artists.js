@@ -38,6 +38,7 @@ export default function Artists() {
     },[])
   return (
     <div className='artistPage'>
+        <button onClick={()=>{navigate("/add-artist")}}>+ ADD ARTIST</button>
         <ul className='artists'>
             {artists.map(artist => {
                 return <li key={artist._id} className='artist'>
