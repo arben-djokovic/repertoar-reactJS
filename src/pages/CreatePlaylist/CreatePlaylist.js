@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import './CreatePlaylist.scss'
 import api from '../../api/apiCalls'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 export default function CreatePlaylist() {
-
+    const navigate = useNavigate()
     let [playlistName, setPlaylistName] = useState("")
     const createPlatlist = async(e) => {
         e.preventDefault()
@@ -17,6 +18,8 @@ export default function CreatePlaylist() {
             })
             if(respone.data.acknowledged == true){
                 toast.success("Playlista kreirana")
+                console.log(respone.data)
+                navigate("/playlists/"+respone.data.insertedId)
             }
         }catch(err){
             toast.error("Neuspjesno kreiranje playliste")

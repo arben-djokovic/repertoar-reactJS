@@ -157,37 +157,41 @@ export default function Song({inPlaylist}) {
     }
 
     const previousSong = async() => {
-      if(inPlaylist){
+      if(inPlaylist && playlist.songs.length > 1){
         let indexOfSong = playlist.songIds.indexOf(id);
         if(indexOfSong == 0){
           navigate("/playlists/"+playlistId+"/songs/"+playlist.songIds[playlist.songIds.length-1])
         }else{
           navigate("/playlists/"+playlistId+"/songs/"+playlist.songIds[indexOfSong-1])
         }
-      }else{
+      }else if(!inPlaylist){
         let index = songs.findIndex(function(song) { return song._id === id;});
         if(index == 0){
           navigate("/songs/"+songs[songs.length-1]._id)
         }else{
           navigate("/songs/"+songs[index-1]._id)
         }
+      }else{
+        toast.warning("There are no more songs in this playlist")
       }
     }
     const nextSong = () => {
-      if(inPlaylist){
+      if(inPlaylist && playlist.songs.length > 1){
         let indexOfSong = playlist.songIds.indexOf(id);
         if(indexOfSong == playlist.songIds.length-1){
           navigate("/playlists/"+playlistId+"/songs/"+playlist.songIds[0])
         }else{
           navigate("/playlists/"+playlistId+"/songs/"+playlist.songIds[indexOfSong+1])
         }
-      }else{
+      }else if(!inPlaylist){
         let index = songs.findIndex(function(song) { return song._id === id;});
         if(index == songs.length-1){
           navigate("/songs/"+songs[0]._id)
         }else{
           navigate("/songs/"+songs[index+1]._id)
         }
+      }else{
+        toast.warning("There are no more songs in this playlist")
       }
     }
     const randomSong = async() => {
@@ -199,13 +203,15 @@ export default function Song({inPlaylist}) {
         }catch(err){
           toast.error("Error while getting previous song")
         }
-      }else{
+      }else if(inPlaylist && playlist.songs.length > 1){
         let indexOfSong = playlist.songIds.indexOf(id);
         let randomIndex = Math.floor(Math.random() * playlist.songs.length);
         while(randomIndex == indexOfSong){
           randomIndex = Math.floor(Math.random() * playlist.songs.length);
         }
         navigate("/playlists/"+playlistId+"/songs/"+playlist.songs[randomIndex]._id)
+      }else{
+        toast.warning("There are no more songs in this playlist")
       }
     }
 

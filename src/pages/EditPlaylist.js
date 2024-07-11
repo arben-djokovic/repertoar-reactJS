@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import './CreatePlaylist/CreatePlaylist.scss'
 import api from '../api/apiCalls'
 import { toast } from 'react-toastify'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function EditPlaylist() {
+    const navigate = useNavigate()
     const {id} = useParams()
     let [playlistName, setPlaylistName] = useState("")
 
@@ -29,6 +30,7 @@ export default function EditPlaylist() {
             })
             toast.success("Playlista izmijenjena")
             console.log(respone)
+            navigate("/playlists/"+id)
         }catch(err){
             toast.error("Neuspjesno kreiranje playliste")
             console.log(err)

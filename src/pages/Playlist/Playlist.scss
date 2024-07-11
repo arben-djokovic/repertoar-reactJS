@@ -1,0 +1,15 @@
+.playlist{
+    .add-to-playlist{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        height: 100%;
+        .playlists{
+            display: flex;
+            flex-direction: column;
+            grid-gap: 10px;
+            overflow-x: auto;
+            max-height: 60%;
+        }
+    }
+}

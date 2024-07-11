@@ -7,7 +7,7 @@ import api from "../../api/apiCalls";
 import { auth } from "../../services/AuthService";
 import Modal from "../Modal/Modal";
 
-export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, addToPlaylistBtn, removeFromPlaylist, playlistId, playlistUserId, isPublic}) {
+export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, addToPlaylistBtn, removeFromPlaylist, playlistId, playlistUserId, isPublic, removeSong}) {
   const navigate = useNavigate();
   const tokenDecoded = auth.getDecodedToken();
   const [playlistModal, setPlaylistModal] = useState(false);
@@ -115,6 +115,7 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
           if(response.data.acknowledged == true){
             toast.success("Song removed from playlist successfully")
             e.target.parentElement.parentElement.parentElement.style.display = 'none'
+            removeSong(song._id)
           }
         }catch(err){
           console.log(err)
@@ -162,14 +163,14 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
           >
             Add to playlist
           </li>}
-          {removeFromPlaylist && (isPublic == true && isAdmin) || playlistUserId == tokenDecoded._id && <li onClick={removeSongFromPlaylist}>Remove from playlist</li>}
+          {removeFromPlaylist && ((isPublic == true && isAdmin) || playlistUserId == tokenDecoded._id) && <li onClick={removeSongFromPlaylist}>Remove from playlist</li>}
         </Dropdown>}
         {playlistModal && (
           <Modal closeModal={() => setPlaylistModal(false)}>
             <div className="add-to-playlist">
               <h3>Add to playlist</h3>
               <div className="playlists">
-                {playlists &&
+                {playlists.length > 0 ?
                   playlists.map((playlist) => {
                     if((playlist.isPublic == true && isAdmin == true) || (playlist.user_id == tokenDecoded._id)){
                       return(
@@ -186,9 +187,9 @@ export default function SongItem({ song, isAdmin, isLogged, editBtn, deleteBtn, 
                         <label htmlFor={playlist._id}> {playlist.name}</label>
                       </div>)
                     } 
-                  })}
+                  }) : "No playlist found"}
               </div>
-              <button onClick={addSongToPlaylists}>Add</button>
+              {playlists.length > 0 ?<button onClick={addSongToPlaylists}>Add</button> : ""}
             </div>
           </Modal>
         )}
