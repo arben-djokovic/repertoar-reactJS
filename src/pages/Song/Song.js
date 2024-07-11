@@ -196,13 +196,16 @@ export default function Song({inPlaylist}) {
     }
     const randomSong = async() => {
       if(!inPlaylist){
-        try{
-          const response = await api.get('/songs/random')
-          navigate("/songs/"+response.data._id)
-          getSong()
-        }catch(err){
-          toast.error("Error while getting previous song")
+        let newSong = song
+        while(newSong._id == id){
+          try{
+            const response = await api.get('/songs/random')
+            newSong = response.data
+          }catch(err){
+            toast.error("Error while getting previous song")
+          }
         }
+        navigate("/songs/"+newSong._id)
       }else if(inPlaylist && playlist.songs.length > 1){
         let indexOfSong = playlist.songIds.indexOf(id);
         let randomIndex = Math.floor(Math.random() * playlist.songs.length);
