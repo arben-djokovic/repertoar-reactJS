@@ -62,6 +62,7 @@ export default function AddSong() {
                 artist_id: artist,
                 genre_id: genre
             })
+            console.log(result)
             navigate("/songs/"+id)
             toast.success("Uspjesno izmijenjena pjesma")
         }catch(err) {

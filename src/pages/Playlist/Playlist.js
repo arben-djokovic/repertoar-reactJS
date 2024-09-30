@@ -54,7 +54,7 @@ export default function Playlist() {
       const getSongs = async() => {
         try{
             const response = await api.get("/songs/")
-            setSongs(response.data)
+            setSongs(response.data.result)
         }catch(err){
             console.log(err)
             if(err.response.status == 401 || err.response.status == 403){

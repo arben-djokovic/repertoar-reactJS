@@ -17,14 +17,15 @@ export default function Singup() {
           username: username,
           password: password
         })
+        console.log(response)
         if(response.data.acknowledged === true){
           toast.dismiss()
           toast.success("Napravili ste profil, prijavite se")
-            navigate("/log-in")
-          }else{
-            toast.dismiss()
-            toast.error(response.data.message)
-          }
+          navigate("/log-in")
+        }else{
+          toast.dismiss()
+          toast.error(response.data.msg)
+        }
        
       }catch(err){
         toast.dismiss()

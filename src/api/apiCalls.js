@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://repertoar-node-m8in81sv6-arbendjokovics-projects.vercel.app',
-  // mode: 'no-cors',
+  baseURL: 'https://repertoar-node-js.vercel.app',
   headers: {
     "Content-Type": "application/json"
   }

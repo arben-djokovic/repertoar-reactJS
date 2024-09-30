@@ -20,7 +20,7 @@ export default function Home() {
     let isLogged = auth.getAuthStatus()
 
     const getSongs = async() => {
-        let apiCall = '/songs/'
+        let apiCall = '/songs'
         let added = false;
         if(search && search.length > 0){
             added = true
@@ -45,7 +45,7 @@ export default function Home() {
 
     const getGenres = async() => {
         try{
-            const response =  await api.get('/genres/')
+            const response =  await api.get('/genres')
             setGenres(response.data)
         }catch(err){
 
@@ -55,7 +55,7 @@ export default function Home() {
 
     useEffect(()=>{
         getSongs()
-        // getGenres()
+        getGenres()
     },[])
   return (
     <div className='home'>
