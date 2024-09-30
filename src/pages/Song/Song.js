@@ -34,10 +34,10 @@ export default function Song({inPlaylist}) {
             let songEdit = response.data
             songEdit.text2 = response.data.text.split("\n")
             setSong(response.data)
-
+            console.log(response.data)
         }catch(err){
-            toast.error(err.response.data.message)
-            console.log(err)
+            // toast.error(err.response.data.message)
+            console.log("Error",err)
         }
     }
     

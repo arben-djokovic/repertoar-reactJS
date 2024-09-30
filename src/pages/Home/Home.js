@@ -36,10 +36,10 @@ export default function Home() {
         }
         try{
             const response =  await api.get(apiCall)
-            setSongs(response.data)
-            console.log(response.data)
+            setSongs(response.data.result)
+            console.log("Data ", response.data)
         }catch(err){
-
+            console.log("error", err)
         }
     }
 
@@ -55,7 +55,7 @@ export default function Home() {
 
     useEffect(()=>{
         getSongs()
-        getGenres()
+        // getGenres()
     },[])
   return (
     <div className='home'>

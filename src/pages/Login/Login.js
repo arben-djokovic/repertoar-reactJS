@@ -18,7 +18,8 @@ export default function Login() {
           username: username,
           password: password
         })
-        if(response.statusText === "OK"){
+        console.log(response)
+        // if(response.statusText === "OK"){
           if(response.data.token){
             auth.login(response.data.token, username)
             toast.dismiss()
@@ -29,7 +30,7 @@ export default function Login() {
             toast.dismiss()
             toast.error(response.data.message)
           }
-       }
+      //  }
       }catch(err){
         toast.dismiss()
         toast.error("Doslo je do gresko, pokusajte ponovo")

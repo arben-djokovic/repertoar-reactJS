@@ -19,8 +19,9 @@ export default function Playlists() {
         try{
             const response =  await api.get(apiCall)
             setPlaylists(response.data)
+            console.log("data",response.data)
         }catch(err){
-
+            console.log("error", err)
         }
     }
 
