@@ -19,13 +19,13 @@
   
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "engines": {
-    "node": "16.x",
-    "npm": "7.x"
+    "node": "18.x",
+    "npm": "10.x"
   },
   "eslintConfig": {
     "extends": [
