@@ -25,14 +25,14 @@ export default function EditPlaylist() {
             return;
         }
         try{
-            const respone = await api.patch("/playlists/"+id, {
+            const respone = await api.put("/playlists/"+id, {
                name: playlistName 
             })
-            toast.success("Playlista izmijenjena")
+            toast.success("Playlista izmjenjena")
             console.log(respone)
             navigate("/playlists/"+id)
         }catch(err){
-            toast.error("Neuspjesno kreiranje playliste")
+            toast.error("Neuspjesna izmjena playliste")
             console.log(err)
         }
     }

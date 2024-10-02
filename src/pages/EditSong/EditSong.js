@@ -56,7 +56,7 @@ export default function AddSong() {
             return;
         }
         try{
-            const result = await api.patch("/songs/"+id, {
+            const result = await api.put("/songs/"+id, {
                 title: songName,
                 text: textArea,
                 artist_id: artist,

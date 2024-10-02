@@ -25,7 +25,7 @@ export default function EditGenre() {
             return;
         }
         try{
-            const result = await api.patch("/genres/"+id, {
+            const result = await api.put("/genres/"+id, {
                 newName: genreName
             })
             console.log(result)

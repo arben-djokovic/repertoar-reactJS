@@ -25,7 +25,7 @@ export default function EditArtist() {
             return;
         }
         try{
-            const result = await api.patch("/artists/"+id, {
+            const result = await api.put("/artists/"+id, {
                 newName: artistName
             })
             toast.success("Artist uspjesno editovan")
